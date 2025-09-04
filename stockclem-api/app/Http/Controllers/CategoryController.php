@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+class CategoryController extends Controller
+{
+    private $rules = [
+        'name' => 'required|string|max:255|',
+        'description' => 'nullable|string|max:500'
+    ];
+
+    private $traductionAttributes = [
+        'name' => 'nombre',
+        'description' => 'descripción'
+    ];
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $categories = Category::all();
+        return response()->json($categories, Response::HTTP_OK);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $data = $this->applyValidator($request, $this->rules, $this->traductionAttributes);
+        if(!empty($data))
+        {
+            return $data;
+        }
+
+        $category = Category::create($request->all());
+        $response = [
+            'message' => 'Categoría creada exitosamente',
+            'category' => $category
+        ];
+        return response()->json($response, Response::HTTP_CREATED);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Category $category)
+    {
+        return response()->json($category, Response::HTTP_OK);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Category $category)
+    {
+        $data = $this->applyValidator($request, $this->rules, $this->traductionAttributes);
+        if(!empty($data))
+        {
+            return $data;
+        }
+
+        $category->update($request->all());
+        $response = [
+            'message' => 'Categoría actualizada exitosamente',
+            'category' => $category
+        ];
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Category $category)
+    {
+        $category->delete();
+        $response = [
+            'message' => 'Categoría eliminada exitosamente',
+            'category' => $category
+        ];
+        return response()->json($response, Response::HTTP_OK);
+    }
+}
