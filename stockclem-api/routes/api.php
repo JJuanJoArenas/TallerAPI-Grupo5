@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
 
-
+Route::middleware('auth:sanctum')->group(function () {
 Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::apiResource('users', UsersController::class);
 Route::apiResource('roles', RoleController::class);
@@ -38,5 +38,4 @@ Route::apiResource('issues', IssueController::class);
 Route::apiResource('persons', PersonController::class);
 Route::apiResource('suppliers', SupplierController::class);
 Route::apiResource('presentations', PresentationController::class);
-
-
+});

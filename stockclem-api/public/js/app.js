@@ -1,4 +1,4 @@
-import './bootstrap';
+
 // API Documentation JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the documentation
@@ -275,7 +275,7 @@ function generateAllResources() {
             }
         },
         { 
-            name: 'entri', 
+            name: 'entry', 
             icon: 'fas fa-file-alt', 
             description: 'Gestión de entradas en el sistema',
             examples: {
