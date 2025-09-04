@@ -8,13 +8,11 @@ use Illuminate\Http\Response;
 
 class ArticleController extends Controller
 {
-
-
-     private $rules = [
+    private $rules = [
         'name' => 'required|string|min:3|max:100',
         'quantity' => 'required|numeric|min:1|max:9999999999',
         'photo' => 'max:255',
-        'technical_sheet' => 'mimes:pdf|max:5120',
+        // 'technical_sheet' => 'mimes:pdf|max:5120',
         'presentation_id' => 'max:9999999999999999999',
         'category_id' => 'max:9999999999999999999',
         'supplier_id' => 'max:9999999999999999999'
@@ -28,10 +26,10 @@ class ArticleController extends Controller
         'technical_sheet' => 'ficha técnica',
         'presentation_id' => 'presentación',
         'category_id' => 'categoría',
-        'supplier_id' => 'proveedor'
+        'supplier_id' => 'proveedor',
+        'unit_id' => 'unidad'
 
     ];
-
 
     /**
      * Display a listing of the resource.
@@ -39,9 +37,8 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::all();
-        $articles->load(['presentation,category,supplier,unit']);
-        return response()->json($articles,Response::HTTP_OK);
-        
+        $articles->load(['presentation', 'category', 'supplier','unit']);
+        return response()->json($articles, Response::HTTP_OK);
     }
 
     /**
@@ -49,27 +46,28 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->applyvalidator($request, $this->rules, $this->traductionAttributes);
-        if(!empty($data)){
+        $data = $this->applyValidator($request, $this->rules, $this->traductionAttributes);
+        if(!empty($data))
+        {
             return $data;
         }
 
         $article = Article::create($request->all());
-
         $response = [
             'message' => 'Registro creado exitosamente',
             'article' => $article
         ];
+
         return response()->json($response, Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Article $articles)
+    public function show(Article $article)
     {
-         $articles->load(['presentation,category,supplier,unit']);
-        return response()->json($articles,Response::HTTP_OK);
+        $article->load(['presentation', 'category', 'supplier', 'unit']);
+        return response()->json($article, Response::HTTP_OK);
     }
 
     /**
@@ -77,17 +75,18 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-          $data = $this->applyvalidator($request, $this->rules, $this->traductionAttributes);
-        if(!empty($data)){
+        $data = $this->applyValidator($request, $this->rules, $this->traductionAttributes);
+        if(!empty($data))
+        {
             return $data;
         }
 
         $article->update($request->all());
-
         $response = [
             'message' => 'Registro actualizado exitosamente',
             'article' => $article
         ];
+
         return response()->json($response, Response::HTTP_OK);
     }
 
@@ -96,11 +95,12 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-          $article->delete();
+        $article->delete();
         $response = [
             'message' => 'Registro eliminado exitosamente',
             'article' => $article
         ];
+
         return response()->json($response, Response::HTTP_OK);
     }
 }

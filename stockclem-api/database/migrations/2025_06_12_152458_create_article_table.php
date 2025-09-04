@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('presentation_id')->nullable()->constrained('presentation')->onDelete('cascade')->onUpdate('cascade')->comment('Fk con presentacion');
             $table->foreignId('category_id')->nullable()->constrained('category')->onDelete('cascade')->onUpdate('cascade')->comment('Fk con categoria');
             $table->foreignId('supplier_id')->nullable()->constrained('supplier')->onDelete('cascade')->onUpdate('cascade')->comment('Fk con proveedor');
-              $table->foreignId('unit_id')->nullable()->constrained('unit')->onDelete('cascade')->onUpdate('cascade')->comment('Fk con unidad');
+            $table->foreignId('unit_id')->nullable()->constrained('unit')->onDelete('cascade')->onUpdate('cascade')->comment('Fk con unidad');
             $table->timestamps();
         });
     }
